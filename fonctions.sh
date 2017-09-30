@@ -1,7 +1,21 @@
 # fonctions utiles en bash
 
 
+# ---------------------- DATE -----------------------------------
+
+# Renvoie la date de demain
+demain()
+{
+	date -v+1d
+}
+
 # ---------------------- LOG -------------------------------------
+# Renvoie un pointage utile pour les fichiers de log
+# au format jj/mm/aaaa Hhmn:s (ex: 29/09/2017 20h45:31)
+dateLOG()
+{
+	date "+%d/%m/%Y %Hh%M:%S"
+}
 
 # print a header in the file
 # $1: file to print the header into
@@ -218,6 +232,15 @@ insertFile1InFile2()
 		RETURN=$?
 	fi
 	return ${RETURN}
+}
+
+
+# Mets la première lettre du mot en majuscule
+# $1 : le mot dont la première lettre doit être mise en majuscule
+# exemple : septembre => Septembre
+premiereLettreEnMajuscule()
+{
+	echo "$(tr '[:lower:]' '[:upper:]' <<< ${1:0:1})${1:1}" # => Septembre
 }
 
 
