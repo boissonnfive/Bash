@@ -114,7 +114,7 @@ decalage()
 	elif [ $i == "Samedi" ]; then
 		# demain = lundi = jour + 2
 		RET=2
-	elif [ $i == "Dimanche" || $i == "Mercredi" ]; then
+	elif [ $i == "Dimanche" -o $i == "Mercredi" ]; then
 		# demain = lundi = jour + 1
 		RET=1
 	else
