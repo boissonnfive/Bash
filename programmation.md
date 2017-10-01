@@ -131,4 +131,10 @@ DEMAIN=$(demain)
 - $$ Le PID su shell qui exécute le script 
 - $! Le PID du dernier processus lancé en arrière-plan 
 
+## Pour approfondir ##
 
+- [Pourquoi mettre des guillemets autour des variables](https://stackoverflow.com/questions/10067266/when-to-wrap-quotes-around-a-shell-variable)
+- [Man sfrtime](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man3/strftime.3.html#//apple_ref/doc/man/3/strftime)
+- [Guide Bash du débutant](https://traduc.org/Guides_pratiques/Suivi/Bash-Beginners-Guide/Document#chap_05)
+- [Advanced Bash-Scripting Guide](http://tldp.org/LDP/abs/html/index.html)
+- [Bourne-Again Shell](https://fr.wikipedia.org/wiki/Bourne-Again_shell)
