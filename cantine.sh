@@ -6,7 +6,7 @@
 
 # +---------------------------------------------------------------------------+
 # |  Fichier     : Cantine.glet                                               |
-# |  Version     : 1.0.0                                                      |
+# |  Version     : 1.0.1                                                      |
 # |  Auteur      : Bruno Boissonnet                                           |
 # |  Date        : 19/09/2017                                                 |
 # +---------------------------------------------------------------------------+
@@ -21,12 +21,10 @@
 #  5. On récupère la date de demain
 #  6. Utiliser la commande `curl --silent` pour récupérer le code source de la page
 #  7. On efface les dix dernières lignes du fichier pour ne pas lire des caractères qui ne sont pas en UTF-8
-#  8. On supprime les double espaces et les espaces dans les balises et juste avant/après
 #  9. On récupère les menus du mois en cours
-# 10. On ne garde que la deuxième ligne
-# 11. On ne garde que ce qu'il y a entre <strong>${AUJOURDHUI}<\/strong> et <strong>${DEMAIN}<\/strong>
-# 12. On remplace <br /> par des sauts de ligne
-# 13. On efface les lignes vides
+# 10. On ne garde que ce qu'il y a après <strong>${AUJOURDHUI}<\/strong>
+# 11. On remplace <br /> par des sauts de ligne
+# 12. On efface les lignes vides
 
 
 # +---------------------------------------------------------------------------+
@@ -134,18 +132,15 @@ menu_cantine()
 	curl --silent "http://www.ville-les-angles.fr/fr/menus-des-cantines-1-3-54" | \
 	# On efface les dix dernières lignes du fichier pour ne pas lire des caractères qui ne sont pas en UTF-8
 	sed -e :a -e '$d;N;2,10ba' -e 'P;D' | \
-	# On supprime les double espaces et les espaces dans les balises et juste avant/après
-	sed -nE -e 's/[ ][ ]/ /gp' -e 's/([ ]<|<[ ]|[ ]<[ ])/</gp' -e 's/([ ]>|>[ ]|[ ]>[ ])/>/gp' | \
 	# On récupère les menus du mois en cours
-	sed -n "/<h3>${MOIS}<\/h3>/,/<h3>${MOIS_SUIVANT}<\/h3>/p" | \
-	# On ne garde que la deuxième ligne
-	sed -n '2p' | \
-	# On ne garde que ce qu'il y a entre <strong>${AUJOURDHUI}<\/strong> et <strong>${DEMAIN}<\/strong>
-	sed -nE "s/.+<strong>${AUJOURDHUI}<\/strong>(.+)<strong>${DEMAIN}<\/strong>.+/\1/p" | \
+	sed -n "/<h3 > ${MOIS}<\/h3>/,/<h3 > ${MOIS_SUIVANT}<\/h3>/p" | \
+	# On ne garde que ce qu'il y a après <strong>${AUJOURDHUI}<\/strong>
+	sed -nE "s/.+${AUJOURDHUI}<\/strong>(.+)<strong>.+/\1/p" | \
 	# On remplace <br /> par des sauts de ligne
 	sed $'s/<br \/>/\\\n/g' | \
 	# On efface les lignes vides
 	sed '/^$/d'
+	#<strong>[A-Z][a-z]* [0-9]{2}(^[<])*<\/strong>
 }
 
 
