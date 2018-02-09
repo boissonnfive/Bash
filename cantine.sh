@@ -135,7 +135,9 @@ menu_cantine()
 	# On récupère les menus du mois en cours
 	sed -n "/<h3 > ${MOIS}<\/h3>/,/<h3 > ${MOIS_SUIVANT}<\/h3>/p" | \
 	# On ne garde que ce qu'il y a après <strong>${AUJOURDHUI}<\/strong>
-	sed -nE "s/.+${AUJOURDHUI}<\/strong>(.+)<strong>.+/\1/p" | \
+	#sed -nE "s/.+${AUJOURDHUI}<\/strong>(.+)<strong>.+/\1/p" #| \
+	sed -nE "s/.+${AUJOURDHUI}(.+)${DEMAIN}.+/\1/p" | \
+	#sed -nE "s/.+${AUJOURDHUI}(.+)Vendredi.{2}22.+/\1/p" | \
 	# On remplace <br /> par des sauts de ligne
 	sed $'s/<br \/>/\\\n/g' | \
 	# On efface les lignes vides
