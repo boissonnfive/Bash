@@ -8,6 +8,10 @@ Tout script bash est un fichier :
 - qui commence par la ligne : `#! /bin/bash`
 - est exécutable ( chmod u+x fichier)
 [- possède l'extension .sh]
+- où chaque ligne est une commande
+
+**NOTE :** pour concaténer deux commandes on utilise le symbôle `;`
+ex: commande1 ; commande2
 
 ## Les commentaires ##
 
@@ -63,6 +67,34 @@ fi
 Opérateurs sur chaînes : == ou =, !=, <, >, -z, -n
 Opérateurs sur nombres : -eq, -ne, lt, gt, -le, -ge, <, >, <=, >=
 **ATTENTION!** Toujours mettre les opérandes entre guillemets. ( [ "$OP1" = "$OP2" ])
+
+**Opérateurs logiques**
+
+- Ou (-o) : [ "$expr1" -o "$expr2" ]
+- Et (-a) : [ "$expr1" -a "$expr2" ]
+- Ou (||) : [ "$expr1" ] || [ "$expr2" ]
+- Et (&&) : [ "$expr1" ] && [ "$expr2" ]
+
+**L'instruction case**
+
+```Shell
+case expression in
+Valeur1 ou Patron1)
+  # liste de commandes
+  ;;
+Valeur2 ou Patron2)
+  # liste de commandes
+  ;;
+Valeur3 ou Patron3)
+  # liste de commandes
+  ;;
+*)
+  # liste de commandes
+  ;;
+esac
+```
+
+*Note :* patron = expression régulière
 
 ## Les boucles ##
 
@@ -138,3 +170,4 @@ DEMAIN=$(demain)
 - [Guide Bash du débutant](https://traduc.org/Guides_pratiques/Suivi/Bash-Beginners-Guide/Document#chap_05)
 - [Advanced Bash-Scripting Guide](http://tldp.org/LDP/abs/html/index.html)
 - [Bourne-Again Shell](https://fr.wikipedia.org/wiki/Bourne-Again_shell)
+- [Apprendre X en Y minutes](https://learnxinyminutes.com/docs/fr-fr/bash-fr/)
