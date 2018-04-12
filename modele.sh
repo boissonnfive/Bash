@@ -1,12 +1,12 @@
 #! /bin/bash
 
 # +---------------------------------------------------------------------------+
-# | Récupère le menu du jour de la cantine de l'école des Dinarelles.         |
-# | Usage:  ./copyright-photo.sh [-h] parametre1 parametre2                   |
+# | Décrit briévement ce que fait le script.                                  |
+# | Usage:  ./modele.sh [-h] parametre1 parametre2                            |
 # +---------------------------------------------------------------------------+
 
 # +---------------------------------------------------------------------------+
-# |  Fichier     : Cantine.glet                                               |
+# |  Fichier     : modele.sh                                                  |
 # |  Version     : 1.0.0                                                      |
 # |  Auteur      : Bruno Boissonnet                                           |
 # |  Date        : 19/09/2017                                                 |
