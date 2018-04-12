@@ -85,18 +85,20 @@ description_meteo()
 		description="Ciel dégagé"
 	elif [ "$description" = "light rain" ];then
 		description="Pluie légère"
+	elif [ "$description" = "moderate rain" ];then
+		description="Pluie éparse"
 	elif [ "$description" = "few clouds" ];then
 		description="Légèrement nuageux"
 	elif [ "$description" = "overcast clouds" ];then
 		description="Couvert"
 	elif [ "$description" = "broken clouds" ];then
-		description="Éclaircies" #description="Nuages épars"
+		description="Éclaircies"
+	elif [ "$description" = "scattered clouds" ];then
+		description="Nuages épars"
 	elif [ "$description" = "mist" ];then
 		description="Brumeux"
 	elif [ "$description" = "fog" ];then
 		description="Brouillard"
-	elif [ "$description" = "moderate rain" ];then
-		description="Pluie éparse"
 	fi
 	echo $description
 }
