@@ -6,8 +6,22 @@
 # Renvoie la date de demain
 demain()
 {
-	date -v+1d
+	date -v+1d "+%d/%m/%Y"
 }
+
+# Renvoie la date d'hier
+hier()
+{
+	date -v+1d "+%d/%m/%Y"
+}
+
+# Renvoie un pointage utile pour les fichiers de log
+# au format jj/mm/aaaa Hhmn:s (ex: 29/09/2017 20h45:31)
+aujourdhui()
+{
+	date "+%d/%m/%Y"
+}
+
 
 # ---------------------- LOG -------------------------------------
 # Renvoie un pointage utile pour les fichiers de log
