@@ -1,30 +1,15 @@
-#! /bin/bash -x
+#! /bin/bash
 
 # +---------------------------------------------------------------------------+
 # | Récupère le menu du jour de la cantine de l'école des Dinarelles.         |
 # +---------------------------------------------------------------------------+
 
 # +---------------------------------------------------------------------------+
-# |  Fichier     : Cantine.glet                                               |
-# |  Version     : 1.0.1                                                      |
+# |  Fichier     : cantine.sh                                                 |
+# |  Version     : 2.0.0                                                      |
 # |  Auteur      : Bruno Boissonnet                                           |
-# |  Date        : 19/09/2017                                                 |
+# |  Date        : 12/04/2018                                                 |
 # +---------------------------------------------------------------------------+
-
-
-# Algorithme :
-#
-#  1. On calcule le décalage entre le jour en cours et le prochain jour de cantine (car il n'y a pas cantine tous les jours et on veut afficher le menu du prochain jour de cantine)
-#  2. On récupère le mois en cours
-#  3. On récupère le mois suivant
-#  4. On récupère la date d'aujourd'hui
-#  5. On récupère la date de demain
-#  6. Utiliser la commande `curl --silent` pour récupérer le code source de la page
-#  7. On efface les dix dernières lignes du fichier pour ne pas lire des caractères qui ne sont pas en UTF-8
-#  9. On récupère les menus du mois en cours
-# 10. On ne garde que ce qu'il y a après <strong>${AUJOURDHUI}<\/strong>
-# 11. On remplace <br /> par des sauts de ligne
-# 12. On efface les lignes vides
 
 
 # +---------------------------------------------------------------------------+
@@ -37,35 +22,27 @@ main()
 	# On récupère le mois en cours
 	MOIS_EN_COURS=$(mois_en_cours)
 	MOIS_EN_COURS=$(premiereLettreEnMajuscule $MOIS_EN_COURS)                 # => Septembre
-	# MOIS_EN_COURS="Mars"
-	#echo $MOIS_EN_COURS
 	
 	# On récupère le mois suivant
 	MOIS_PROCHAIN=$(mois_prochain)
 	MOIS_PROCHAIN=$(premiereLettreEnMajuscule $MOIS_PROCHAIN) # => Octobre
-	# MOIS_PROCHAIN="Avril"
-	#echo $MOIS_PROCHAIN
 	
 	# On récupère la date d'aujourd'hui (format : Jour N°)
 	AUJOURDHUI=$(aujourd_hui)
-	# AUJOURDHUI="Vendredi 30"
-	#echo $AUJOURDHUI
 	
 	# On récupère la date de demain (format : Jour N°)
 	DEMAIN=$(demain)
-	# DEMAIN="Lundi 2"
-	#echo $DEMAIN	
 	
 	# On récupère le menu de la cantine
 	MENU=$(menu_cantine)
 
 	if [ -z "$MENU" ]; then
-		echo "Impossible de récupérer le menu à partir de la page web. Vérifiez votre connexion à internet."
+		echo "Impossible de récupérer le menu."
 	else
 		MENU_DU_MOIS=$(menu_du_mois ${MOIS_EN_COURS} ${MOIS_PROCHAIN} "${MENU}")
 
 		if [ -z "$MENU_DU_MOIS" ]; then
-			echo "Impossible de récupérer le menu du mois.\nFin du script."
+			echo "Impossible de récupérer le menu du mois."
 		else
 			MENU_DU_JOUR=$(menu_du_jour "${AUJOURDHUI}" "${DEMAIN}" "${MENU_DU_MOIS}")
 
@@ -163,9 +140,8 @@ decalage()
 # puis passé à la moulinette de sed
 menu_cantine()
 {
-	curl --silent "http://www.ville-les-angles.fr/fr/menus-des-cantines-1-3-54" | \
-	# On efface les dix dernières lignes du fichier pour ne pas lire des caractères qui ne sont pas en UTF-8
-	sed -e :a -e '$d;N;2,10ba' -e 'P;D'
+	DOSSIER_EN_COURS=$(dirname $0)
+	cat ${DOSSIER_EN_COURS}/cantine_2018.txt
 }
 
 
@@ -179,7 +155,7 @@ menu_du_mois()
 	# echo ${1}
 	# echo ${2}
 	# echo "${3}"
-	echo "${3}" | sed -n "/<h3 > ${1}<\/h3>/,/<h3 > ${2}<\/h3>/p"
+	echo "${3}" | sed -n "/${1}/,/${2}/p"
 }
 
 # Renvoi le menu du jour de la cantine de Rémy
@@ -196,25 +172,32 @@ menu_du_jour()
 	BORNE_INF=$(echo $AUJOURDHUI | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
 	BORNE_SUP=$(echo $DEMAIN | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
 
+	# Si la borne supérieure est inférieure à la borne inférieure => C'est le dernier jour du mois !
 	if [ $BORNE_SUP -gt $BORNE_INF ]; then
 		# echo "OK"
-		echo "${3}" | tr -cd '[:print:]\n' | sed -nE "s/.+${1}(.+)${2}.+/\1/p"
+		# echo "${3}" | tr -cd '[:print:]\n' | sed -nE "s/.+${1}(.+)${2}.+/\1/p"
+		# On récupère ce qu'il y a entre les deux jours
+		# Puis on efface la première ligne (jour 1)
+		# et la dernière ligne (jour 2)
+		echo "${3}" | sed -n "/${1}/,/${2}/p" | sed 1d | sed -e '$ d'
 	else
-		# La borne supérieure est inférieure à la borne inférieure => C'est le dernier jour du mois !
 		# echo "${3}" | sed -nE "s/.+${1}(.+)<\/p>.+/\1/p"
-		echo "${3}" | sed -nE "s/.+${1}(.+)/\1/p"
+		# On récupère ce qu'il y a entre le dernier jour du mois et la fin du texte
+		# Puis on efface la première ligne (jour 1)
+		# et la dernière ligne (mois suivant)
+		echo "${3}" | sed -nE "/${1}/,$ p" | sed 1d | sed -e '$ d'
 	fi
 }
 
 
-# Renvoi le menu du jour de la cantine de Rémy
-# à partir de la page web du site des angles
-# $1 : Menu du jour en html
+# Supprime les lignes vides et les espaces inutiles
+# $1 : Menu du jour
 menu_apres_filtre()
 {
-	# On remplace <br /> par des sauts de ligne
 	# On efface les lignes vides
-	echo "${1}" | sed $'s/<br \/>/\\\n/g' | sed '/^$/d'
+	# et les espaces inutiles
+	# et les lignes qui ne contiennent qu'un seul caractère
+	echo "${1}" |  sed '/^$/d' | sed 's/  //g' | sed -E '/^.{1}$/d'
 }
 
 
