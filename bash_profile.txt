@@ -1,0 +1,57 @@
+# Tell ls to be colourful
+export CLICOLOR=1
+
+# Tell grep to highlight matches
+export GREP_OPTIONS='--color=auto'
+
+## Modify the prompt
+#export PS1='\u@\h:\w
+#→ '
+#export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w
+#\[\033[00m\]→ '
+
+# Couleurs du préfix du terminal
+NM="\[\033[0;38m\]" 
+LIGHTGRAY="\[\033[0;37m\]" 
+CYAN="\[\033[0;36m\]" 
+YELLOW="\[\033[0;33m\]"
+DEFAULT="\[\033[0m\]"
+BLUE="\[\033[34m\]"
+MAGENTA="\[\033[35m\]"
+
+# Prompt : < UserName@MachineName > : dossier-en-cours [nb de fichiers]
+export PS1="$DEFAULT< $BLUE\u$DEFAULT@$LIGHTGRAY\h $DEFAULT> : $DEFAULT\w [\$(ls | wc -l | sed 's/ //g')]$MAGENTA
+→$YELLOW "
+
+# Raccourcis
+# 'alias -p' pour lister tous les alias
+alias C="cd ~/Documents/programmation/C/projets"
+alias CS="cd ~/Documents/programmation/C_Sharp/"
+alias C++="cd ~/Documents/programmation/C++/projets"
+alias SHELL="cd ~/Documents/programmation/shell/projets"
+alias WEB="cd ~/Documents/programmation/XHTML-CSS/projets"
+alias PHP="cd ~/Documents/programmation/PHP/projets"
+alias ll='ls -aGl'
+alias h='history'
+alias rm='rm -i'          # prompt before overwrite
+alias cp='cp -i'
+alias mv='mv -i'
+alias ping='ping -o'      #requires an argument
+alias pg='ps aux | grep'  #requires an argument
+alias hg='history | grep' #requires an argument
+alias ..='cd ..'
+alias cdesk='cd ~/Desktop'
+alias manual='open http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/index.html'
+##
+# Your previous /Users/bruno/.bash_profile file was backed up as /Users/bruno/.bash_profile.macports-saved_2016-09-10_at_20:47:18
+##
+
+# MacPorts Installer addition on 2016-09-10_at_20:47:18: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+
+# MacPorts Installer addition on 2016-12-12_at_13:02:46: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
