@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # fonctions utiles en bash
 
 
@@ -99,6 +100,23 @@ extension()
 	echo ${i##*.}
 }
 
+
+# Test l'extension du fichier
+# $1 : fichier que l'on veut tester
+# $2 : extension supposée
+# Retour : 0 si l'extension proposée est l'extension du fichier, 1 sinon
+isExtension()
+{
+	if [[ ${1} == *.${2} ]]; then
+        RET=0
+    else
+    	RET=1
+    fi
+    return $RET
+}
+
+
+## TODO : remplacer ls $1 par cd $1 et un for sur *.jpg
 # Permutation circulaire des noms des photos jpg du dossier
 # $1 : dossier contenant les fichiers
 permutationCirculaireFichiers()
@@ -265,14 +283,15 @@ premiereLettreEnMajuscule()
 # $2 : message en cas de succès
 # $3 : message en cas d'échec
 # si échec, fin du script
+# Les messages doivent avoir la même longueur (utilisez des espaces sinon)
 gestionDesErreurs()
 {
 	if [ $? != "0" ]; then
-	    echo "Creation du paquet de livraison                                         [NOK]"
+	    echo $3"                                  [NOK]"
 	    echo "Fin du script."
 	    exit
 	fi
-	echo "Creation du paquet de livraison                                      [OK]"
+	echo $2"                                  [OK]"
 }
 
 
@@ -293,18 +312,21 @@ copieSSH()
 # machine XXX.XXX.XXX.XXX
 # login machin
 # password machinpwd
-telechargeFTP()
-{
-	ftp <<**
-	open ${FTPAddress}
-	cd ${FTPDir}
-	bin
-	prompt
-	mget *.${fileFormat}
-	mdelete *.${fileFormat}
-	bye
-	**
-}
+
+## TODO : réparer l'erreur « syntax error: unexpected end of file »
+## causée par le code suivant
+# telechargeFTP()
+# {
+# 	ftp <<**
+# 	open ${FTPAddress}
+# 	cd ${FTPDir}
+# 	bin
+# 	prompt
+# 	mget *.${fileFormat}
+# 	mdelete *.${fileFormat}
+# 	bye
+# 	**
+# }
 
 
 # -------------------------- PARAMS -----------------------------
@@ -373,3 +395,5 @@ usage()
     echo "    parametre2: la photo à tamponner"
     echo ""
 }
+
+
