@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -x
 
 # +---------------------------------------------------------------------------+
 # | Récupère le menu du jour de la cantine de l'école des Dinarelles.         |
@@ -115,7 +115,10 @@ decalage()
 	# %A  : le jour de la semaine
 	i=$(date +%A)
 	# echo $i
-	if [ $i == "Vendredi" ]; then
+	if [ $i == "Mardi" ]; then
+		# demain = jeudi = jour + 2
+		RET=2
+	elif [ $i == "Vendredi" ]; then
 		# demain = lundi = jour + 3
 		RET=3
 	elif [ $i == "Samedi" ]; then
@@ -169,17 +172,48 @@ menu_du_jour()
 	# echo "${2}"
 	# echo "${3}"
 	
-	BORNE_INF=$(echo $AUJOURDHUI | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
-	BORNE_SUP=$(echo $DEMAIN | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
+	AUJOURDHUI=${1}
+
+	BORNE_INF=$(echo ${1} | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
+	BORNE_SUP=$(echo ${2} | sed -nE "s/[A-Z][a-z]+ ([0-9][0-9]?)/\1/p")
 
 	# Si la borne supérieure est inférieure à la borne inférieure => C'est le dernier jour du mois !
 	if [ $BORNE_SUP -gt $BORNE_INF ]; then
 		# echo "OK"
+		
+		RES=$(echo "${3}" | sed -n "/${1}/p" )
+
+		if [ -z "$RES" ]; then
+			echo "Impossible de trouver ${1}."
+			return ""
+		else
+
+			# Si aujourd'hui est le 1er du mois
+			if [ $BORNE_INF -eq 1 ]; then
+				RES=$(echo "${3}" | sed -n "/${1}er/p")
+				if [ -z "$RES" ]; then
+					AUJOURDHUI=${1}
+				else
+					AUJOURDHUI=${1}er
+				fi
+			fi
+
+
+			RES=$(echo "${3}" | sed -n "/${2}/p" )
+
+			if [ -z "$RES" ]; then
+				echo "Impossible de trouver ${2}."
+				return ""
+			fi
+		fi
+
 		# echo "${3}" | tr -cd '[:print:]\n' | sed -nE "s/.+${1}(.+)${2}.+/\1/p"
 		# On récupère ce qu'il y a entre les deux jours
 		# Puis on efface la première ligne (jour 1)
 		# et la dernière ligne (jour 2)
-		echo "${3}" | sed -n "/${1}/,/${2}/p" | sed 1d | sed -e '$ d'
+		echo "${3}" | sed -n "/${AUJOURDHUI}/,/${2}/p" | sed 1d | sed -e '$ d'
+			
+
 	else
 		# echo "${3}" | sed -nE "s/.+${1}(.+)<\/p>.+/\1/p"
 		# On récupère ce qu'il y a entre le dernier jour du mois et la fin du texte
