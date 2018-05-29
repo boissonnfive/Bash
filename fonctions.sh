@@ -16,8 +16,7 @@ hier()
 	date -v+1d "+%d/%m/%Y"
 }
 
-# Renvoie un pointage utile pour les fichiers de log
-# au format jj/mm/aaaa Hhmn:s (ex: 29/09/2017 20h45:31)
+# Renvoie la date d'aujourd'hui
 aujourdhui()
 {
 	date "+%d/%m/%Y"
@@ -88,16 +87,42 @@ runInAutomator()
 
 # ----------------------------- DOSSIERS/FICHIERS ---------------------
 
-# Renvoi le dossier en cours
-workingDirectory()
+# Renvoi le chemin du fichier
+# $1 : fichier dont on veut le chemin
+# Retour : chemin du fichier
+# Exemple : /tmp/my.dir/filename.tar.gz => /tmp/my.dir
+chemin()
 {
-	dirname $0
+	dirname "${1}"
+}
+
+
+# Renvoi le nom du fichier sans le chemin
+# $1 : fichier dont on veut le nom
+# Retour : nom du fichier
+# Exemple : /tmp/my.dir/filename.tar.gz => filename.tar.gz
+nom()
+{
+	basename "${1}"
 }
 
 # Renvoi l'extension du fichier
+# $1 : fichier dont on veut l'extension
+# Retour : l'extension du fichier
+# Exemple : /tmp/my.dir/filename.tar.gz => tar.gz
 extension()
 {
-	echo ${i##*.}
+	echo "${1#*.}"
+}
+
+# Renvoi le nom sans l'extension
+# $1 : fichier dont on veut le nom
+# Retour : le nom sans le chemin ni l'extension
+# Exemple : /tmp/my.dir/filename.tar.gz => filename
+nomSansExtension()
+{
+	fichier=$(basename "${1}")
+	echo "${fichier%%.*}"
 }
 
 
@@ -146,7 +171,7 @@ renommeTousLesFichiersDuRepertoire()
 
 # -------------------------------- mySQL ----------------------------
 
-# Dump la BD mySQL
+# fait une sauvegarde de la BDD mySQL
 # $1 : utilisateur
 # $2 : mot de passe
 # $3 : hôte
@@ -272,7 +297,7 @@ insertFile1InFile2()
 # exemple : septembre => Septembre
 premiereLettreEnMajuscule()
 {
-	echo "$(tr '[:lower:]' '[:upper:]' <<< ${1:0:1})${1:1}" # => Septembre
+	echo "$(tr '[:lower:]' '[:upper:]' <<< ${1:0:1})${1:1}"
 }
 
 
