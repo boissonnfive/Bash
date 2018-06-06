@@ -25,12 +25,6 @@ export PS1="$DEFAULT< $BLUE\u$DEFAULT@$LIGHTGRAY\h $DEFAULT> : $DEFAULT\w [\$(ls
 
 # Raccourcis
 # 'alias -p' pour lister tous les alias
-alias C="cd ~/Documents/programmation/C/projets"
-alias CS="cd ~/Documents/programmation/C_Sharp/"
-alias C++="cd ~/Documents/programmation/C++/projets"
-alias SHELL="cd ~/Documents/programmation/shell/projets"
-alias WEB="cd ~/Documents/programmation/XHTML-CSS/projets"
-alias PHP="cd ~/Documents/programmation/PHP/projets"
 alias ll='ls -aGl'
 alias h='history'
 alias rm='rm -i'          # prompt before overwrite
@@ -42,6 +36,16 @@ alias hg='history | grep' #requires an argument
 alias ..='cd ..'
 alias cdesk='cd ~/Desktop'
 alias manual='open http://developer.apple.com/mac/library/documentation/Darwin/Reference/ManPages/index.html'
+## GIT
+alias cdgh='cd ~/Desktop/GitHub'
+alias gs='git status'
+alias ga='git add'
+alias gcm='git commit -m'
+alias gpom='git push origin master'
+## Sublime Text
+alias sub='open -a "Sublime Text.app"'
+
+
 ##
 # Your previous /Users/bruno/.bash_profile file was backed up as /Users/bruno/.bash_profile.macports-saved_2016-09-10_at_20:47:18
 ##
@@ -55,3 +59,18 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+# TrisHume Pro (Ruby gem)
+# https://github.com/trishume/pro/blob/master/README.md
+# pro is a command to wrangle your git repositories. It includes features like instantly cd'ing to your git repos
+# and getting a status overview, and running an arbitrary command in every git repo.
+
+# pro cd function
+pd() {
+  local projDir=$(pro search $1)
+  cd ${projDir}
+}
+
+# Ouvre l'entrée de manual dans Aperçu
+manuel() {
+	man -t "$1" | open -f -a preview
+}
