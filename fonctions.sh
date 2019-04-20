@@ -118,8 +118,18 @@ extension()
 # Renvoi le nom sans l'extension
 # $1 : fichier dont on veut le nom
 # Retour : le nom sans le chemin ni l'extension
-# Exemple : /tmp/my.dir/filename.tar.gz => filename
+# Exemple : /tmp/my.dir/filename.tar.gz => filename.tar
 nomSansExtension()
+{
+	fichier=$(basename "${1}")
+	echo "${fichier%.*}"
+}
+
+# Renvoi le nom sans l'extension
+# $1 : fichier dont on veut le nom
+# Retour : le nom sans le chemin ni l'extension
+# Exemple : /tmp/my.dir/filename.tar.gz => filename
+nomSansExtension2()
 {
 	fichier=$(basename "${1}")
 	echo "${fichier%%.*}"
